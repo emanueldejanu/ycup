@@ -1,4 +1,4 @@
-﻿using Chromium.Update.Engine;
+﻿using ChromiumUpdater.Engine;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -70,7 +70,7 @@ namespace ChromiumUpdater.UnitTesting
         [TestMethod()]
         public void GetChromiumLatestVersionStringTest()
         {
-            Chromium.Update.Engine.ChromiumUpdateEngine target = new Chromium.Update.Engine.ChromiumUpdateEngine(); 
+            ChromiumUpdateEngine target = new ChromiumUpdateEngine(); 
             string actual;
             actual = target.GetChromiumLatestVersionString();
             Assert.AreNotEqual<String>(actual, String.Empty);

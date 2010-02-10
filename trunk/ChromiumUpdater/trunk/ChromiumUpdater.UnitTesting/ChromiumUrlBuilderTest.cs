@@ -1,4 +1,4 @@
-﻿using Chromium.Update.Engine;
+﻿using ChromiumUpdater.Engine;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -68,10 +68,9 @@ namespace ChromiumUpdater.UnitTesting
         ///A test for GetChromeLatestVersionDescription
         ///</summary>
         [TestMethod()]
-        [DeploymentItem("Chromium.Update.Engine.dll")]
         public void GetChromeLatestVersionDescriptionTest()
         {
-            Chromium.Update.Engine.ChromiumUrlBuilder target = new Chromium.Update.Engine.ChromiumUrlBuilder(); 
+            ChromiumUrlBuilder target = new ChromiumUrlBuilder(); 
             Uri actual;
             Uri expected = new Uri("http://build.chromium.org/buildbot/snapshots/chromium-rel-xp/38312/mini_installer.exe");
             actual = target.GetUrlToVersion("38312");
@@ -85,8 +84,7 @@ namespace ChromiumUpdater.UnitTesting
         [DeploymentItem("Chromium.Update.Engine.dll")]
         public void GetUrlToLatestChromiumVersionDescriptionTest()
         {
-            //ChromiumUrlBuilder_Accessor
-            Chromium.Update.Engine.ChromiumUrlBuilder target = new Chromium.Update.Engine.ChromiumUrlBuilder(); 
+            ChromiumUrlBuilder target = new ChromiumUrlBuilder(); 
             System.Uri expected = new Uri("http://build.chromium.org/buildbot/snapshots/chromium-rel-xp/LATEST"); 
             System.Uri actual;
             actual = target.GetUrlToLatestChromiumVersionDescription();
