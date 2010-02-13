@@ -25,14 +25,14 @@ namespace ChromiumUpdater.Engine
 
         public String BaseUrl { get; set; }
 
-        public Uri GetUrlToVersionUpdateXml(String version)
+        public Uri GetUrlToUpdateXml(String version)
         {
             UriBuilder urb = new UriBuilder(this.BaseUrl);
             urb.Path = String.Format("{0}{1}/{2}", urb.Path, version, ChromiumUrlBuilder.ChangeLog);
             return urb.Uri;
         }
 
-        public Uri GetUrlToVersionMiniInstaller(String version)
+        public Uri GetUrlToMiniInstaller(String version)
         {
             UriBuilder urb = new UriBuilder(this.BaseUrl);
             urb.Path = String.Format("{0}{1}/{2}", urb.Path, version, ChromiumUrlBuilder.MiniInstaller);

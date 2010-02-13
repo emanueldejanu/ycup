@@ -4,6 +4,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{26041249-302C-4AC3-80A1-EA3D332C83FA}"
 	ProjectSection(SolutionItems) = preProject
 		ChromiumUpdater.vsmdi = ChromiumUpdater.vsmdi
+		ExampleChangeLog.xml = ExampleChangeLog.xml
 		Local.testsettings = Local.testsettings
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
