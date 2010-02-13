@@ -1,6 +1,8 @@
 ﻿using ChromiumUpdater.Engine;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.IO;
+using System.Text;
 
 namespace ChromiumUpdater.UnitTesting
 {
@@ -74,6 +76,22 @@ namespace ChromiumUpdater.UnitTesting
             string actual;
             actual = target.GetChromiumLatestVersionString();
             Assert.AreNotEqual<String>(actual, String.Empty);
+        }
+
+        [TestMethod()]
+        public void GetChromiumLatestVersionUpdateXml()
+        {
+            ChromiumUpdateEngine target = new ChromiumUpdateEngine();
+            string actual;
+            actual = target.GetChromiumLatestVersionString();
+            Assert.AreNotEqual<String>(actual, String.Empty);
+            using (Stream s = target.GetChromiumVersionChangeLogDataStream(actual))
+            {
+                using (StreamReader sr = new StreamReader(s, Encoding.UTF8))
+                {
+                    String xmlData = sr.ReadToEnd();
+                }
+            }
         }
     }
 }

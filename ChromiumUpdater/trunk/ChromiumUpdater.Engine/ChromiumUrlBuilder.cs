@@ -10,6 +10,7 @@ namespace ChromiumUpdater.Engine
         const String DefaultBaseUrl = "http://build.chromium.org/buildbot/snapshots/chromium-rel-xp/";
         const String MiniInstaller = "mini_installer.exe";
         const String Latest = "LATEST";
+        const String ChangeLog = "changelog.xml";
 
         public ChromiumUrlBuilder() : this(ChromiumUrlBuilder.DefaultBaseUrl)
         {}
@@ -24,7 +25,14 @@ namespace ChromiumUpdater.Engine
 
         public String BaseUrl { get; set; }
 
-        public Uri GetUrlToVersion(String version)
+        public Uri GetUrlToVersionUpdateXml(String version)
+        {
+            UriBuilder urb = new UriBuilder(this.BaseUrl);
+            urb.Path = String.Format("{0}{1}/{2}", urb.Path, version, ChromiumUrlBuilder.ChangeLog);
+            return urb.Uri;
+        }
+
+        public Uri GetUrlToVersionMiniInstaller(String version)
         {
             UriBuilder urb = new UriBuilder(this.BaseUrl);
             urb.Path = String.Format("{0}{1}/{2}", urb.Path, version, ChromiumUrlBuilder.MiniInstaller);
