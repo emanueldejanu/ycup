@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
 using System.Text;
+using ChromiumUpdater.Engine.Schemas;
 
 namespace ChromiumUpdater.UnitTesting
 {
@@ -91,6 +92,39 @@ namespace ChromiumUpdater.UnitTesting
                 {
                     String xmlData = sr.ReadToEnd();
                 }
+            }
+        }
+
+        [TestMethod()]
+        public void GetChromiumLatestVersionUpdateLog()
+        {
+            try
+            {
+                ChromiumUpdateEngine target = new ChromiumUpdateEngine();
+                string actual;
+                actual = target.GetChromiumLatestVersionString();
+                Assert.AreNotEqual<String>(actual, String.Empty);
+                Log log = target.GetChromiumVersionChangeLogData(actual);
+                Assert.IsNotNull(log);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        [TestMethod()]
+        public void GetChromiumVersions()
+        {
+            try
+            {
+                ChromiumUpdateEngine target = new ChromiumUpdateEngine();
+               
+                target.GetChromiumVersions();
+            }
+            catch
+            {
+                throw;
             }
         }
     }

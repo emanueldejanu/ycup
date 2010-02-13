@@ -1,0 +1,132 @@
+﻿<?xml version="1.0"?>
+
+<log>
+
+	<logentry
+
+	   revision="34576">
+
+		<author>arv@chromium.org</author>
+
+		<date>2009-12-15T18:47:14.827970Z</date>
+
+		<msg>
+			NTP: Hide the notifier when restoring all removed thumbnails.
+
+
+
+			BUG=29952
+
+			TEST=Blacklist a thumbanil. This shows the notifier. Then restore all remove
+
+			thumbnails. The notifier should be hidden now.
+
+
+
+			Review URL: http://codereview.chromium.org/494013
+		</msg>
+
+	</logentry>
+
+	<logentry
+
+	   revision="34577">
+
+		<author>dkegel@google.com</author>
+
+		<date>2009-12-15T19:06:34.652156Z</date>
+
+		<msg>
+			Absolutify suppression directories so they survive the cd.
+
+
+
+			Use the 'right' version of valgrind.  Later, once we have
+
+			our patches in, we need to implement
+
+			the searching code from ../valgrind/valgrind.sh.
+
+
+
+			BUG=none
+
+			TEST=wine bot actually runs valgrind on unit_tests
+
+			Review URL: http://codereview.chromium.org/507011
+		</msg>
+
+	</logentry>
+
+	<logentry
+
+	   revision="34578">
+
+		<author>akalin@chromium.org</author>
+
+		<date>2009-12-15T19:20:08.730893Z</date>
+
+		<msg>
+			Implemented OS X version of NetworkStatusDetectorTaskMac.
+
+
+
+			BUG=none
+
+			TEST=trybots,manual testing
+
+
+
+			Review URL: http://codereview.chromium.org/485004
+		</msg>
+
+	</logentry>
+
+	<logentry
+
+	   revision="34579">
+
+		<author>ojan@chromium.org</author>
+
+		<date>2009-12-15T19:23:30.057310Z</date>
+
+		<msg>
+			Add one more test that got flaky after sharding the http tests.
+
+			And mark the flaky tests from moving to apache and sharding
+
+			the http tests as part of the umbrella 9798 bug.
+
+			Review URL: http://codereview.chromium.org/501023
+		</msg>
+
+	</logentry>
+
+	<logentry
+
+	   revision="34580">
+
+		<author>andybons@chromium.org</author>
+
+		<date>2009-12-15T19:25:51.528589Z</date>
+
+		<msg>
+			Reattempt at r465143. The UI tests rely too heavily on the current behavior of closing the last window indicating exiting the entire app, so that is left alone for now with a TODO added.
+
+			From the old description:
+
+			Mac: Fixes bug where extension background hosts were being cleared when the last window was closed. It assumed that this meant the app was closing. Not the case with Mac apps. Added a mac-only notification APP_TERMINATED and use that to perform cleanup upon shutdown.
+
+
+
+			TEST=More description in the bug, but basically just make sure that background views stick around even after you've closed the last window.
+
+			BUG=28666
+
+			Review URL: http://codereview.chromium.org/502012
+		</msg>
+
+	</logentry>
+
+</log>
+
