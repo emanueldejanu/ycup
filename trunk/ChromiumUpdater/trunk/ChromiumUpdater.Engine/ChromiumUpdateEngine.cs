@@ -5,11 +5,26 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.Threading;
+using ChromiumUpdater.Engine.Io;
+using ChromiumUpdater.Engine.Extensions;
 
 namespace ChromiumUpdater.Engine
 {
     public class ChromiumUpdateEngine
     {
+        public Stream GetChromiumVersionChangeLogDataStream(String version)
+        {
+            ChromiumUrlBuilder urlBuilder = new ChromiumUrlBuilder();
+            Uri uri = urlBuilder.GetUrlToVersionUpdateXml(version);
+            WebClient webClient = new WebClient();
+            using (Stream s = webClient.OpenRead(uri))
+            {
+                VirtualStream vs = new VirtualStream();
+                s.CopyContentsTo(vs);
+                return vs;
+            }
+        }
+
         public String GetChromiumLatestVersionString()
         {
             ChromiumUrlBuilder urlBuilder = new ChromiumUrlBuilder();

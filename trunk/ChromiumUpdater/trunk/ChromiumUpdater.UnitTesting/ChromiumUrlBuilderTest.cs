@@ -73,7 +73,7 @@ namespace ChromiumUpdater.UnitTesting
             ChromiumUrlBuilder target = new ChromiumUrlBuilder(); 
             Uri actual;
             Uri expected = new Uri("http://build.chromium.org/buildbot/snapshots/chromium-rel-xp/38312/mini_installer.exe");
-            actual = target.GetUrlToVersion("38312");
+            actual = target.GetUrlToVersionMiniInstaller("38312");
             Assert.AreEqual<Uri>(expected, actual);
         }
 
