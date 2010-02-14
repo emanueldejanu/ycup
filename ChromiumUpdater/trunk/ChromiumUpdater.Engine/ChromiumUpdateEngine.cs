@@ -26,9 +26,18 @@ namespace ChromiumUpdater.Engine
             doc.OptionOutputAsXml = true;
 
             XDocument xdoc = null;
-            using (VirtualStream vs = new VirtualStream())
+            using (MemoryStream vs = new MemoryStream())
             {
                 doc.Save(vs);
+                vs.Position = 0;
+                
+                String fn = Path.Combine( Path.GetTempPath(),  "x.xml");
+                using (Stream f = File.Create(fn))
+                {
+                    vs.CopyContentsTo(f);
+                    f.Flush();
+                }
+
                 vs.Position = 0;
                 using (XmlReader xr = XmlReader.Create(vs))
                 {
