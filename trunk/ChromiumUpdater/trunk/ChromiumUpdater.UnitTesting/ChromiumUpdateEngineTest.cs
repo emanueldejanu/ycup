@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Text;
 using ChromiumUpdater.Engine.Schemas;
+using System.Collections.Generic;
 
 namespace ChromiumUpdater.UnitTesting
 {
@@ -120,7 +121,12 @@ namespace ChromiumUpdater.UnitTesting
             {
                 ChromiumUpdateEngine target = new ChromiumUpdateEngine();
                
-                target.GetChromiumVersions();
+                IEnumerable<String> results = target.GetChromiumVersions();
+                Assert.IsNotNull(results);
+                foreach (var version in results)
+                {
+                    var log = target.GetChromiumVersionChangeLogData(version);
+                }
             }
             catch
             {

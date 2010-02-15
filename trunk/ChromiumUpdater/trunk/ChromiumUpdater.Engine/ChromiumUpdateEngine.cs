@@ -24,35 +24,43 @@ namespace ChromiumUpdater.Engine
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(content);
             doc.OptionOutputAsXml = true;
+            doc.OptionDefaultStreamEncoding = Encoding.UTF8;
 
             XDocument xdoc = null;
-            using (MemoryStream vs = new MemoryStream())
+            using (VirtualStream vs = new VirtualStream())
             {
                 doc.Save(vs);
                 vs.Position = 0;
                 
-                String fn = Path.Combine( Path.GetTempPath(),  "x.xml");
-                using (Stream f = File.Create(fn))
-                {
-                    vs.CopyContentsTo(f);
-                    f.Flush();
-                }
-
-                vs.Position = 0;
                 using (XmlReader xr = XmlReader.Create(vs))
                 {
                     xdoc = XDocument.Load(xr);
                 }
             }
 
-            return null;
+           
+
+            IEnumerable<String> elements =    xdoc
+                                                .Descendants()
+                                                .Where(x => x.Name == "a")
+                                                .Select<XElement, String>(x => x.Value.Replace("/", String.Empty))    
+                                                .Where(y => y.ToCharArray().All(v => Char.IsDigit(v)));
+
+            return elements;
         }
 
         public Log GetChromiumVersionChangeLogData(String version)
         {
             using (Stream s = this.GetChromiumVersionChangeLogDataStream(version))
             {
-                return Log.Deserialize(s);
+                try
+                {
+                    return Log.Deserialize(s);
+                }
+                catch
+                {
+                    return Log.Empty;
+                }
             }
         }
 
