@@ -839,6 +839,7 @@ namespace HtmlAgilityPack
         {
             StreamWriter sw = new StreamWriter(outStream, GetOutEncoding());
             Save(sw);
+            sw.Flush();
         }
 
         /// <summary>
@@ -858,6 +859,7 @@ namespace HtmlAgilityPack
             }
             StreamWriter sw = new StreamWriter(outStream, encoding);
             Save(sw);
+            sw.Flush();
         }
 
         /// <summary>
@@ -868,6 +870,7 @@ namespace HtmlAgilityPack
         {
             StreamWriter sw = new StreamWriter(filename, false, GetOutEncoding());
             Save(sw);
+            sw.Flush();
             sw.Close();
         }
 
@@ -888,6 +891,7 @@ namespace HtmlAgilityPack
             }
             StreamWriter sw = new StreamWriter(filename, false, encoding);
             Save(sw);
+            sw.Flush();
             sw.Close();
         }
 
