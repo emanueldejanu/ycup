@@ -72,6 +72,31 @@ namespace ChromiumUpdater.UnitTesting
         ///A test for GetChromiumLatestVersionString
         ///</summary>
         [TestMethod()]
+        public void DownloadChromiumTest()
+        {
+            try
+            {
+                String fileName = Path.Combine(Path.GetTempPath(), "mini_installer.exe");
+
+                ChromiumUpdateEngine target = new ChromiumUpdateEngine();
+                string actual;
+                actual = target.GetChromiumLatestVersionString();
+                target.DownloadChromiumInstaller(Path.GetTempPath(), actual, false, (x) =>
+                    {
+                        return true;
+                    }
+                );
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        ///A test for GetChromiumLatestVersionString
+        ///</summary>
+        [TestMethod()]
         public void GetChromiumLatestVersionStringTest()
         {
             ChromiumUpdateEngine target = new ChromiumUpdateEngine(); 
@@ -133,5 +158,7 @@ namespace ChromiumUpdater.UnitTesting
                 throw;
             }
         }
+
+       
     }
 }

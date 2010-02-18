@@ -25,6 +25,11 @@ namespace ChromiumUpdater.Engine
 
         public String BaseUrl { get; set; }
 
+        public String MiniInstallerFileName
+        {
+            get { return MiniInstaller; }
+        } 
+
         public Uri GetUrlToUpdateXml(String version)
         {
             UriBuilder urb = new UriBuilder(this.BaseUrl);
