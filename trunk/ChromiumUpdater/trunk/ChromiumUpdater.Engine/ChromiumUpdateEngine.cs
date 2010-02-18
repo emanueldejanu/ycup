@@ -16,36 +16,32 @@ namespace ChromiumUpdater.Engine
 {
     public class ChromiumUpdateEngine
     {
+        public void DownloadChromiumInstaller(String folder, String version, bool appendVersionToFileName, Func<FileDownloadProgressChangedEventArgs, bool> callback)
+        {
+            ChromiumUrlBuilder urlBuilder = new ChromiumUrlBuilder();
+            Uri uri = urlBuilder.GetUrlToMiniInstaller(version);
+            String fileName = Path.Combine(folder, urlBuilder.MiniInstallerFileName);
+            using (FileStream fs = File.Create(fileName))
+            {
+                this.InternalDownloadData(uri, callback, fs);
+            }
+        }
+
         public IEnumerable<String> GetChromiumVersions()
         {
             Uri uri = new Uri(new ChromiumUrlBuilder().BaseUrl);
-            WebClient webClient = new WebClient();
-            String content = webClient.DownloadString(uri);
+            String content = this.InternalDownloadString(uri, (x) =>
+            {
+                return true;
+            }
+            );
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(content);
-            doc.OptionOutputAsXml = true;
-            doc.OptionDefaultStreamEncoding = Encoding.UTF8;
 
-            XDocument xdoc = null;
-            using (VirtualStream vs = new VirtualStream())
-            {
-                doc.Save(vs);
-                vs.Position = 0;
-                
-                using (XmlReader xr = XmlReader.Create(vs))
-                {
-                    xdoc = XDocument.Load(xr);
-                }
-            }
-
-           
-
-            IEnumerable<String> elements =    xdoc
-                                                .Descendants()
-                                                .Where(x => x.Name == "a")
-                                                .Select<XElement, String>(x => x.Value.Replace("/", String.Empty))    
-                                                .Where(y => y.ToCharArray().All(v => Char.IsDigit(v)));
-
+            IEnumerable<String> elements = doc.DocumentNode.Descendants().Where(x => x.Name == "a")
+                                                                         .Select<HtmlNode, String>(x => x.InnerText.Replace("/", String.Empty))
+                                                                         .Where(y => y.ToCharArray().All(v => Char.IsDigit(v)))
+                                                                         .OrderBy(x => x);
             return elements;
         }
 
@@ -82,33 +78,87 @@ namespace ChromiumUpdater.Engine
         {
             ChromiumUrlBuilder urlBuilder = new ChromiumUrlBuilder();
             Uri versionUri = urlBuilder.GetUrlToLatestChromiumVersionDescription();
+            String latestVersion = this.InternalDownloadString(versionUri, (x) => 
+                                                                {
+                                                                    return true;
+                                                                }
+                                                                );
+            return latestVersion;
+        }
+
+        protected String InternalDownloadString(Uri uri,Func<FileDownloadProgressChangedEventArgs, bool> callback)
+        {
             DownloadStringCompletedEventArgs completedEventArgs = null;
             using (AutoResetEvent ev = new AutoResetEvent(false))
             {
-                WebClient webClient = new WebClient();
-
-                webClient.DownloadProgressChanged += (s, e) =>
+                using (WebClient webClient = new WebClient())
                 {
-                    DownloadProgressChangedEventArgs ea = e;
-                };
+                    webClient.DownloadProgressChanged += (s, e) =>
+                    {
+                        if (
+                            (callback != null) &&
+                            (!callback(new FileDownloadProgressChangedEventArgs() { BytesReceived = e.BytesReceived, ProgressPercentage = e.ProgressPercentage, TotalBytesToReceive = e.TotalBytesToReceive }))
+                            )
+                        {
+                            webClient.CancelAsync();
+                        }
 
-                webClient.DownloadStringCompleted += (s, e) =>
-                {
-                    completedEventArgs = e;
-                    ev.Set();
-                };
+                    };
 
-                webClient.DownloadStringAsync(versionUri);
-                ev.WaitOne();
+                    webClient.DownloadStringCompleted += (s, e) =>
+                    {
+                        completedEventArgs = e;
+                        ev.Set();
+                    };
 
-                if (completedEventArgs.Error != null)
-                    throw new ApplicationException(completedEventArgs.Error.Message, completedEventArgs.Error);
+                    webClient.DownloadStringAsync(uri);
+                    ev.WaitOne();
 
-                if (completedEventArgs.Cancelled)
-                    return String.Empty;
+                    if (completedEventArgs.Error != null)
+                        throw new ApplicationException(completedEventArgs.Error.Message, completedEventArgs.Error);
 
-                return completedEventArgs.Result;
+                    if (completedEventArgs.Cancelled)
+                        return String.Empty;
+
+                    return completedEventArgs.Result;
+                }
             }
         }
+
+        protected bool InternalDownloadData(Uri uri, Func<FileDownloadProgressChangedEventArgs, bool> callback, Stream target)
+        {
+            using (AutoResetEvent ev = new AutoResetEvent(false))
+            {
+                using (WebClient webClient = new WebClient())
+                {
+                    webClient.DownloadProgressChanged += (s, e) =>
+                    {
+                        if (
+                            (callback != null) &&
+                            (!callback(new FileDownloadProgressChangedEventArgs() { BytesReceived = e.BytesReceived, ProgressPercentage = e.ProgressPercentage, TotalBytesToReceive = e.TotalBytesToReceive}))
+                            )
+                        {
+                            webClient.CancelAsync();
+                        }
+
+                    };
+
+                    using (Stream s = webClient.OpenRead(uri))
+                    {
+                        s.CopyContentsTo(target);
+                        target.Position = 0;
+                    }
+                }
+            }
+
+            return true;
+        }
+    }
+
+    public class FileDownloadProgressChangedEventArgs : EventArgs
+    {
+        public int ProgressPercentage { get; set; }
+        public long BytesReceived { get; set;  }
+        public long TotalBytesToReceive { get; set; }
     }
 }
