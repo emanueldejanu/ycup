@@ -11,23 +11,21 @@ using ChromiumUpdater.Engine.Schemas;
 using HtmlAgilityPack;
 using System.Xml.Linq;
 using System.Xml;
+using System.ComponentModel;
 
 namespace ChromiumUpdater.Engine
 {
-    public class ChromiumUpdateEngine
+     internal class ChromiumUpdateEngine : IChromiumUpdateEngine, IDisposable
     {
-        public void DownloadChromiumInstaller(String folder, String version, bool appendVersionToFileName, Func<FileDownloadProgressChangedEventArgs, bool> callback)
+         void IChromiumUpdateEngine.DownloadChromiumInstaller(String folder, String version, bool appendVersionToFileName, Func<FileDownloadProgressChangedEventArgs, bool> callback)
         {
             ChromiumUrlBuilder urlBuilder = new ChromiumUrlBuilder();
             Uri uri = urlBuilder.GetUrlToMiniInstaller(version);
             String fileName = Path.Combine(folder, urlBuilder.MiniInstallerFileName);
-            using (FileStream fs = File.Create(fileName))
-            {
-                this.InternalDownloadData(uri, callback, fs);
-            }
+            this.InternalDownloadFile(uri, callback, fileName);
         }
 
-        public IEnumerable<String> GetChromiumVersions()
+         IEnumerable<String> IChromiumUpdateEngine.GetChromiumVersions()
         {
             Uri uri = new Uri(new ChromiumUrlBuilder().BaseUrl);
             String content = this.InternalDownloadString(uri, (x) =>
@@ -45,9 +43,9 @@ namespace ChromiumUpdater.Engine
             return elements;
         }
 
-        public Log GetChromiumVersionChangeLogData(String version)
+         Log IChromiumUpdateEngine.GetChromiumVersionChangeLogData(String version)
         {
-            using (Stream s = this.GetChromiumVersionChangeLogDataStream(version))
+            using (Stream s = this.InternalGetChromiumVersionChangeLogDataStream(version))
             {
                 try
                 {
@@ -60,21 +58,7 @@ namespace ChromiumUpdater.Engine
             }
         }
 
-        public Stream GetChromiumVersionChangeLogDataStream(String version)
-        {
-            ChromiumUrlBuilder urlBuilder = new ChromiumUrlBuilder();
-            Uri uri = urlBuilder.GetUrlToUpdateXml(version);
-            WebClient webClient = new WebClient();
-            using (Stream s = webClient.OpenRead(uri))
-            {
-                VirtualStream vs = new VirtualStream();
-                s.CopyContentsTo(vs);
-                vs.Position = 0;
-                return vs;
-            }
-        }
-
-        public String GetChromiumLatestVersionString()
+         String IChromiumUpdateEngine.GetChromiumLatestVersionString()
         {
             ChromiumUrlBuilder urlBuilder = new ChromiumUrlBuilder();
             Uri versionUri = urlBuilder.GetUrlToLatestChromiumVersionDescription();
@@ -86,7 +70,7 @@ namespace ChromiumUpdater.Engine
             return latestVersion;
         }
 
-        protected String InternalDownloadString(Uri uri,Func<FileDownloadProgressChangedEventArgs, bool> callback)
+        internal String InternalDownloadString(Uri uri,Func<FileDownloadProgressChangedEventArgs, bool> callback)
         {
             DownloadStringCompletedEventArgs completedEventArgs = null;
             using (AutoResetEvent ev = new AutoResetEvent(false))
@@ -125,8 +109,9 @@ namespace ChromiumUpdater.Engine
             }
         }
 
-        protected bool InternalDownloadData(Uri uri, Func<FileDownloadProgressChangedEventArgs, bool> callback, Stream target)
+        internal bool InternalDownloadFile(Uri uri, Func<FileDownloadProgressChangedEventArgs, bool> callback, String targetFile)
         {
+            AsyncCompletedEventArgs completedEventArgs = null;
             using (AutoResetEvent ev = new AutoResetEvent(false))
             {
                 using (WebClient webClient = new WebClient())
@@ -143,16 +128,46 @@ namespace ChromiumUpdater.Engine
 
                     };
 
-                    using (Stream s = webClient.OpenRead(uri))
+                    webClient.DownloadFileCompleted += (s, e) =>
                     {
-                        s.CopyContentsTo(target);
-                        target.Position = 0;
-                    }
+                        completedEventArgs = e;
+                        ev.Set();
+                    };
+
+                    webClient.DownloadStringAsync(uri);
+                    ev.WaitOne();
+
+                    if (completedEventArgs.Error != null)
+                        throw new ApplicationException(completedEventArgs.Error.Message, completedEventArgs.Error);
+
+                    if (completedEventArgs.Cancelled)
+                        return false;
                 }
             }
 
             return true;
         }
+
+        internal Stream InternalGetChromiumVersionChangeLogDataStream(String version)
+        {
+            ChromiumUrlBuilder urlBuilder = new ChromiumUrlBuilder();
+            Uri uri = urlBuilder.GetUrlToUpdateXml(version);
+            WebClient webClient = new WebClient();
+            using (Stream s = webClient.OpenRead(uri))
+            {
+                VirtualStream vs = new VirtualStream();
+                s.CopyContentsTo(vs);
+                vs.Position = 0;
+                return vs;
+            }
+        }
+
+        #region IDisposable implementation
+        void IDisposable.Dispose()
+        {
+            
+        }
+        #endregion
     }
 
     public class FileDownloadProgressChangedEventArgs : EventArgs

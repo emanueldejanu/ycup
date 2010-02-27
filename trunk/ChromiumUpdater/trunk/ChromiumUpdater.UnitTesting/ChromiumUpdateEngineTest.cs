@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using ChromiumUpdater.Engine.Schemas;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ChromiumUpdater.UnitTesting
 {
@@ -78,13 +79,16 @@ namespace ChromiumUpdater.UnitTesting
             {
                 String fileName = Path.Combine(Path.GetTempPath(), "mini_installer.exe");
 
-                ChromiumUpdateEngine target = new ChromiumUpdateEngine();
+                IChromiumUpdateEngine target = ChromiumUpdateEngineFactory.CreateInstance();
                 string actual;
                 actual = target.GetChromiumLatestVersionString();
                 target.DownloadChromiumInstaller(Path.GetTempPath(), actual, false, (x) =>
-                    {
-                        return true;
-                    }
+                {
+                    Console.WriteLine("", x.ProgressPercentage);
+                    Console.WriteLine("", x.TotalBytesToReceive);
+                    Console.WriteLine("", x.BytesReceived);
+                    return true;
+                }
                 );
             }
             catch (Exception ex)
@@ -99,34 +103,18 @@ namespace ChromiumUpdater.UnitTesting
         [TestMethod()]
         public void GetChromiumLatestVersionStringTest()
         {
-            ChromiumUpdateEngine target = new ChromiumUpdateEngine(); 
+            IChromiumUpdateEngine target = ChromiumUpdateEngineFactory.CreateInstance(); ; 
             string actual;
             actual = target.GetChromiumLatestVersionString();
             Assert.AreNotEqual<String>(actual, String.Empty);
         }
 
-        [TestMethod()]
-        public void GetChromiumLatestVersionUpdateXml()
-        {
-            ChromiumUpdateEngine target = new ChromiumUpdateEngine();
-            string actual;
-            actual = target.GetChromiumLatestVersionString();
-            Assert.AreNotEqual<String>(actual, String.Empty);
-            using (Stream s = target.GetChromiumVersionChangeLogDataStream(actual))
-            {
-                using (StreamReader sr = new StreamReader(s, Encoding.UTF8))
-                {
-                    String xmlData = sr.ReadToEnd();
-                }
-            }
-        }
-
-        [TestMethod()]
+          [TestMethod()]
         public void GetChromiumLatestVersionUpdateLog()
         {
             try
             {
-                ChromiumUpdateEngine target = new ChromiumUpdateEngine();
+                IChromiumUpdateEngine target = ChromiumUpdateEngineFactory.CreateInstance();
                 string actual;
                 actual = target.GetChromiumLatestVersionString();
                 Assert.AreNotEqual<String>(actual, String.Empty);
@@ -144,7 +132,7 @@ namespace ChromiumUpdater.UnitTesting
         {
             try
             {
-                ChromiumUpdateEngine target = new ChromiumUpdateEngine();
+                IChromiumUpdateEngine target = ChromiumUpdateEngineFactory.CreateInstance();
                
                 IEnumerable<String> results = target.GetChromiumVersions();
                 Assert.IsNotNull(results);
