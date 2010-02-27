@@ -12,7 +12,8 @@
     <AssemblyName>ChromiumUpdater.Engine</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,6 +59,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChromiumUpdateEngineFactory.cs" />
+    <Compile Include="ChromiumUpdateEngineInterfaces.cs" />
     <Compile Include="ChromiumUrlBuilder.cs" />
     <Compile Include="ChromiumUpdateEngine.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
