@@ -80,6 +80,12 @@
   <ItemGroup>
     <Folder Include="Icons\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChromiumUpdater.Engine\ChromiumUpdater.Engine.csproj">
+      <Project>{ABBA079F-340F-4573-A579-A12678DFB70A}</Project>
+      <Name>ChromiumUpdater.Engine</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
