@@ -27,6 +27,15 @@
       <GenerateComponentGroups>True</GenerateComponentGroups>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChromiumUpdater.Engine\ChromiumUpdater.Engine.csproj">
+      <Name>ChromiumUpdater.Engine</Name>
+      <Project>{abba079f-340f-4573-a579-a12678dfb70a}</Project>
+      <Private>True</Private>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.
