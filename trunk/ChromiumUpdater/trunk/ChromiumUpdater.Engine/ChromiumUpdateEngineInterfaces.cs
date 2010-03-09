@@ -9,6 +9,7 @@ namespace ChromiumUpdater.Engine
 {
     public interface IChromiumUpdateEngine : IDisposable
     {
+        ChromiumRegistryInfo GetChromiumRegistryInfo();
         void DownloadChromiumInstaller(String folder, String version, bool appendVersionToFileName, Func<FileDownloadProgressChangedEventArgs, bool> callback);
         IEnumerable<String> GetChromiumVersions();
         Log GetChromiumVersionChangeLogData(String version);

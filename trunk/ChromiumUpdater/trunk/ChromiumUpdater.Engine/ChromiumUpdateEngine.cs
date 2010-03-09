@@ -12,11 +12,49 @@ using HtmlAgilityPack;
 using System.Xml.Linq;
 using System.Xml;
 using System.ComponentModel;
+using Microsoft.Win32;
 
 namespace ChromiumUpdater.Engine
 {
      internal class ChromiumUpdateEngine : IChromiumUpdateEngine, IDisposable
     {
+         const String ChromiumRegistryKey = @"Software\Chromium";
+
+         ChromiumRegistryInfo IChromiumUpdateEngine.GetChromiumRegistryInfo()
+         {
+             /*
+              REGEDIT4
+
+             [HKEY_CURRENT_USER\Software\Chromium]
+             "name"="Chromium"
+             "pv"="5.0.348.0"
+             "InstallerError"=dword:00000002
+             "InstallerSuccessLaunchCmdLine"="\"C:\\Users\\WaSyL\\AppData\\Local\\Chromium\\Application\\chrome.exe\""
+             "usagestats"=dword:00000000
+             "lastrun"="12912477732511850"
+             "InstallerResult"=dword:00000000
+              */
+             ChromiumRegistryInfo chromiumRegistryInfo = null;
+             using (var key = Registry.CurrentUser.OpenSubKey(ChromiumUpdateEngine.ChromiumRegistryKey, false))
+             {
+                 if (key != null)
+                 {
+                     Object o = key.GetValue("InstallerError", 0);
+
+                     chromiumRegistryInfo = new ChromiumRegistryInfo()
+                     {
+                        InstallerError = (uint)key.GetValue("InstallerError", 0),
+                        InstallerResult = (uint)key.GetValue("InstallerResult", 0),
+                        InstallerSuccessLaunchCmdLine = (String)key.GetValue("InstallerSuccessLaunchCmdLine", String.Empty),
+                        LastRun = (String)key.GetValue("lastrun", String.Empty),
+                        Name = (String)key.GetValue("name", String.Empty),
+                        VersionString = (String)key.GetValue("pv", String.Empty)
+                     };
+                 }
+             }
+             return chromiumRegistryInfo;
+         }
+
          void IChromiumUpdateEngine.DownloadChromiumInstaller(String folder, String version, bool appendVersionToFileName, Func<FileDownloadProgressChangedEventArgs, bool> callback)
         {
             ChromiumUrlBuilder urlBuilder = new ChromiumUrlBuilder();
@@ -162,12 +200,10 @@ namespace ChromiumUpdater.Engine
             }
         }
 
-        #region IDisposable implementation
         void IDisposable.Dispose()
         {
-            
+            throw new NotImplementedException();
         }
-        #endregion
     }
 
     public class FileDownloadProgressChangedEventArgs : EventArgs
