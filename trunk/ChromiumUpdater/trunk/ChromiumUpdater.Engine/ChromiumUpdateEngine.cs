@@ -39,12 +39,10 @@ namespace ChromiumUpdater.Engine
              {
                  if (key != null)
                  {
-                     Object o = key.GetValue("InstallerError", 0);
-
                      chromiumRegistryInfo = new ChromiumRegistryInfo()
                      {
-                        InstallerError = (uint)key.GetValue("InstallerError", 0),
-                        InstallerResult = (uint)key.GetValue("InstallerResult", 0),
+                        InstallerError = (int)key.GetValue("InstallerError", 0),
+                        InstallerResult = (int)key.GetValue("InstallerResult", 0),
                         InstallerSuccessLaunchCmdLine = (String)key.GetValue("InstallerSuccessLaunchCmdLine", String.Empty),
                         LastRun = (String)key.GetValue("lastrun", String.Empty),
                         Name = (String)key.GetValue("name", String.Empty),

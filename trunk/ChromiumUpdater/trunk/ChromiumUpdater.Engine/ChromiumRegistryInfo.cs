@@ -7,8 +7,8 @@ namespace ChromiumUpdater.Engine
 {
     public class ChromiumRegistryInfo
     {
-        public uint InstallerError { get; set; }
-        public uint InstallerResult { get; set; }
+        public int InstallerError { get; set; }
+        public int InstallerResult { get; set; }
         public String InstallerSuccessLaunchCmdLine { get; set; }
         public String LastRun { get; set; }
         public String Name { get; set; }
@@ -26,6 +26,11 @@ namespace ChromiumUpdater.Engine
             {
                 this.VersionString = value.ToString(4);
             }
+        }
+
+        public override string ToString()
+        {
+            return String.Format("{0} {1}", this.Name, this.VersionString);
         }
     }
 }
