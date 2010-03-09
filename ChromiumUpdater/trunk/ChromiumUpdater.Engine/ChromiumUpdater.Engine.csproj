@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChromiumRegistryInfo.cs" />
     <Compile Include="ChromiumUpdateEngineFactory.cs" />
     <Compile Include="ChromiumUpdateEngineInterfaces.cs" />
     <Compile Include="ChromiumUrlBuilder.cs" />

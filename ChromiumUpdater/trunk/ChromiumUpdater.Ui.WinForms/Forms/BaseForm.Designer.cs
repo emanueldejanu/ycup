@@ -1,6 +1,6 @@
-﻿namespace ChromiumUpdater.Ui.WinForms
+﻿namespace ChromiumUpdater.Ui.WinForms.Forms
 {
-    partial class MainForm
+    partial class BaseForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,20 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.SuspendLayout();
-            // 
-            // MainForm
-            // 
-            resources.ApplyResources(this, "$this");
+            this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "MainForm";
-            this.Load += new System.EventHandler(this.MainForm_Load);
-            this.ResumeLayout(false);
-
+            this.Text = "BaseForm";
         }
 
         #endregion
     }
 }
-

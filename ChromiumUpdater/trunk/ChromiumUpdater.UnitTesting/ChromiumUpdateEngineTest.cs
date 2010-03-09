@@ -73,6 +73,17 @@ namespace ChromiumUpdater.UnitTesting
         ///A test for GetChromiumLatestVersionString
         ///</summary>
         [TestMethod()]
+        public void GetChromiumRegistryInfoTest()
+        {
+            IChromiumUpdateEngine target = ChromiumUpdateEngineFactory.CreateInstance(); 
+            ChromiumRegistryInfo actual;
+            actual = target.GetChromiumRegistryInfo();
+        }
+
+        /// <summary>
+        ///A test for DownloadChromiumTest
+        ///</summary>
+        [TestMethod()]
         public void DownloadChromiumTest()
         {
             try
