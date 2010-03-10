@@ -20,11 +20,7 @@ namespace ChromiumUpdater.Ui.WinForms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            using (IChromiumUpdateEngine target = ChromiumUpdateEngineFactory.CreateInstance())
-            {
-                ChromiumRegistryInfo actual;
-                actual = target.GetChromiumRegistryInfo();
-            }
+           
         }
     }
 }

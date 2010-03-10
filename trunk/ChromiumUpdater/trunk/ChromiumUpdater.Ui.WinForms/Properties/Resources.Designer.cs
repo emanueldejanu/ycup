@@ -59,5 +59,12 @@ namespace ChromiumUpdater.Ui.WinForms.Properties {
                 resourceCulture = value;
             }
         }
+        
+        internal static System.Drawing.Bitmap _112_RefreshArrow_Blue_32x32 {
+            get {
+                object obj = ResourceManager.GetObject("112_RefreshArrow_Blue_32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
