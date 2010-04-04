@@ -31,13 +31,20 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.buttonRefresh = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.labelLatest = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.tableLayoutPanel.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel
             // 
             resources.ApplyResources(this.tableLayoutPanel, "tableLayoutPanel");
-            this.tableLayoutPanel.Controls.Add(this.buttonRefresh, 1, 0);
+            this.tableLayoutPanel.Controls.Add(this.panel1, 0, 0);
+            this.tableLayoutPanel.Controls.Add(this.button1, 1, 0);
+            this.tableLayoutPanel.Controls.Add(this.buttonRefresh, 1, 1);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
             // 
             // buttonRefresh
@@ -46,6 +53,30 @@
             this.buttonRefresh.Image = global::ChromiumUpdater.Ui.WinForms.Properties.Resources._112_RefreshArrow_Blue_32x32;
             this.buttonRefresh.Name = "buttonRefresh";
             this.buttonRefresh.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.labelLatest);
+            this.panel1.Name = "panel1";
+            // 
+            // labelLatest
+            // 
+            resources.ApplyResources(this.labelLatest, "labelLatest");
+            this.labelLatest.Name = "labelLatest";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // button1
+            // 
+            resources.ApplyResources(this.button1, "button1");
+            this.button1.Image = global::ChromiumUpdater.Ui.WinForms.Properties.Resources._112_RefreshArrow_Blue_32x32;
+            this.button1.Name = "button1";
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -56,6 +87,7 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tableLayoutPanel.ResumeLayout(false);
             this.tableLayoutPanel.PerformLayout();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -64,6 +96,10 @@
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
         private System.Windows.Forms.Button buttonRefresh;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label labelLatest;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button1;
     }
 }
 
