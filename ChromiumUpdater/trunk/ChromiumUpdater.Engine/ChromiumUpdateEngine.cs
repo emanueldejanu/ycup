@@ -113,16 +113,39 @@ namespace ChromiumUpdater.Engine
             {
                 using (WebClient webClient = new WebClient())
                 {
+                    if (
+                        (callback != null) &&
+                        (!callback(new FileDownloadProgressChangedEventArgs()
+                        {
+                            BytesReceived = 0,
+                            ProgressPercentage = 0,
+                            TotalBytesToReceive = 0,
+                            FileName = String.Empty,
+                            FileDownloadState = FileDownloadState.Starting
+                        }))
+                        )
+                    {
+                        return null;
+                    }
+
+                    DownloadProgressChangedEventArgs lastDownloadProgressChangedEventArgs = null;
                     webClient.DownloadProgressChanged += (s, e) =>
                     {
+                        lastDownloadProgressChangedEventArgs = e;
                         if (
                             (callback != null) &&
-                            (!callback(new FileDownloadProgressChangedEventArgs() { BytesReceived = e.BytesReceived, ProgressPercentage = e.ProgressPercentage, TotalBytesToReceive = e.TotalBytesToReceive }))
+                            (!callback(new FileDownloadProgressChangedEventArgs()
+                            {
+                                BytesReceived = e.BytesReceived,
+                                ProgressPercentage = e.ProgressPercentage,
+                                TotalBytesToReceive = e.TotalBytesToReceive,
+                                FileName = String.Empty,
+                                FileDownloadState = FileDownloadState.Downloading
+                            }))
                             )
                         {
                             webClient.CancelAsync();
                         }
-
                     };
 
                     webClient.DownloadStringCompleted += (s, e) =>
@@ -134,15 +157,31 @@ namespace ChromiumUpdater.Engine
                     webClient.DownloadStringAsync(uri);
                     ev.WaitOne();
 
-                    if (completedEventArgs.Error != null)
-                        throw new ApplicationException(completedEventArgs.Error.Message, completedEventArgs.Error);
+                    if (
+                            (callback != null) &&
+                            (!callback(new FileDownloadProgressChangedEventArgs()
+                            {
+                                BytesReceived = lastDownloadProgressChangedEventArgs != null ? lastDownloadProgressChangedEventArgs.BytesReceived : 0,
+                                ProgressPercentage = lastDownloadProgressChangedEventArgs != null ? lastDownloadProgressChangedEventArgs.ProgressPercentage : 0,
+                                TotalBytesToReceive = lastDownloadProgressChangedEventArgs != null ? lastDownloadProgressChangedEventArgs.TotalBytesToReceive : 0,
+                                FileName = String.Empty,
+                                FileDownloadState = FileDownloadState.Completed,
+                                Error = completedEventArgs != null ? completedEventArgs.Error : null
+                            }))
+                            )
+                    {
+                        return null;
+                    }
 
                     if (completedEventArgs.Cancelled)
-                        return String.Empty;
+                        return null;
 
-                    return completedEventArgs.Result;
+                    if (completedEventArgs.Error != null)
+                        throw new ApplicationException(completedEventArgs.Error.GetBaseException().Message, completedEventArgs.Error.GetBaseException());
                 }
             }
+
+            return completedEventArgs.Result; ;
         }
 
         internal bool InternalDownloadFile(Uri uri, Func<FileDownloadProgressChangedEventArgs, bool> callback, String targetFile)
@@ -152,16 +191,39 @@ namespace ChromiumUpdater.Engine
             {
                 using (WebClient webClient = new WebClient())
                 {
+                    if (
+                        (callback != null) &&
+                        (!callback(new FileDownloadProgressChangedEventArgs()
+                        {
+                            BytesReceived = 0,
+                            ProgressPercentage = 0,
+                            TotalBytesToReceive = 0,
+                            FileName = targetFile,
+                            FileDownloadState = FileDownloadState.Starting
+                        }))
+                        )
+                    {
+                        return false;
+                    }
+
+                    DownloadProgressChangedEventArgs lastDownloadProgressChangedEventArgs = null;
                     webClient.DownloadProgressChanged += (s, e) =>
                     {
+                        lastDownloadProgressChangedEventArgs = e;
                         if (
                             (callback != null) &&
-                            (!callback(new FileDownloadProgressChangedEventArgs() { BytesReceived = e.BytesReceived, ProgressPercentage = e.ProgressPercentage, TotalBytesToReceive = e.TotalBytesToReceive}))
+                            (!callback(new FileDownloadProgressChangedEventArgs() 
+                                        { 
+                                            BytesReceived = e.BytesReceived, 
+                                            ProgressPercentage = e.ProgressPercentage, 
+                                            TotalBytesToReceive = e.TotalBytesToReceive, 
+                                            FileName = targetFile,
+                                            FileDownloadState = FileDownloadState.Downloading
+                                        }))
                             )
                         {
                             webClient.CancelAsync();
                         }
-
                     };
 
                     webClient.DownloadFileCompleted += (s, e) =>
@@ -170,14 +232,30 @@ namespace ChromiumUpdater.Engine
                         ev.Set();
                     };
 
-                    webClient.DownloadStringAsync(uri);
+                    webClient.DownloadFileAsync(uri, targetFile);
                     ev.WaitOne();
 
-                    if (completedEventArgs.Error != null)
-                        throw new ApplicationException(completedEventArgs.Error.Message, completedEventArgs.Error);
+                    if (
+                            (callback != null) &&
+                            (!callback(new FileDownloadProgressChangedEventArgs()
+                            {
+                                BytesReceived = lastDownloadProgressChangedEventArgs != null ? lastDownloadProgressChangedEventArgs.BytesReceived : 0,
+                                ProgressPercentage = lastDownloadProgressChangedEventArgs != null ? lastDownloadProgressChangedEventArgs.ProgressPercentage : 0,
+                                TotalBytesToReceive = lastDownloadProgressChangedEventArgs != null ? lastDownloadProgressChangedEventArgs.TotalBytesToReceive : 0,
+                                FileName = targetFile,
+                                FileDownloadState = FileDownloadState.Completed,
+                                Error = completedEventArgs != null ? completedEventArgs.Error : null
+                            }))
+                            )
+                    {
+                        return false;
+                    }
 
                     if (completedEventArgs.Cancelled)
                         return false;
+
+                    if (completedEventArgs.Error != null)
+                        throw new ApplicationException(completedEventArgs.Error.GetBaseException().Message, completedEventArgs.Error.GetBaseException());
                 }
             }
 
@@ -200,14 +278,24 @@ namespace ChromiumUpdater.Engine
 
         void IDisposable.Dispose()
         {
-            throw new NotImplementedException();
+            
         }
     }
+
+     public enum FileDownloadState
+     {
+         Starting,
+         Downloading,
+         Completed
+     }
 
     public class FileDownloadProgressChangedEventArgs : EventArgs
     {
         public int ProgressPercentage { get; set; }
         public long BytesReceived { get; set;  }
         public long TotalBytesToReceive { get; set; }
+        public String FileName { get; set; }
+        public FileDownloadState FileDownloadState { get; set; }
+        public Exception Error { get; set; }
     }
 }

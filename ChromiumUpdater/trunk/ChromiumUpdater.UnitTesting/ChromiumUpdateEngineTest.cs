@@ -95,9 +95,9 @@ namespace ChromiumUpdater.UnitTesting
                 actual = target.GetChromiumLatestVersionString();
                 target.DownloadChromiumInstaller(Path.GetTempPath(), actual, false, (x) =>
                 {
-                    Console.WriteLine("", x.ProgressPercentage);
-                    Console.WriteLine("", x.TotalBytesToReceive);
-                    Console.WriteLine("", x.BytesReceived);
+                    Trace.Write(String.Format("", x.ProgressPercentage));
+                    Trace.Write(String.Format("", x.TotalBytesToReceive));
+                    Trace.Write(String.Format("", x.BytesReceived));
                     return true;
                 }
                 );
