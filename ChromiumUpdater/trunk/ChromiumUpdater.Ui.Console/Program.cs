@@ -28,14 +28,15 @@ namespace ChromiumUpdater.Ui.Text
                 Console.WriteLine(AppResources.DownloadingChromium, latestVersion);
 
                 String targetFileName = null;
-                Console.SetCursorPosition(0, Console.CursorTop);
                 updateEngine.DownloadChromiumInstaller(Path.GetTempPath(), latestVersion, false, (x) =>
                 {
                     if (x.FileDownloadState == FileDownloadState.Starting)
                         targetFileName = x.FileName;
 
-                    Console.Write("{0}% ({1} of {2})", x.ProgressPercentage, x.BytesReceived, x.TotalBytesToReceive);
-                    Console.SetCursorPosition(0, Console.CursorTop);
+
+                    if (x.ProgressPercentage % 10 == 0)
+                        Console.WriteLine("{0}% ({1} of {2})", x.ProgressPercentage, x.BytesReceived, x.TotalBytesToReceive);
+
                     return true;
                 });
 
@@ -57,6 +58,8 @@ namespace ChromiumUpdater.Ui.Text
                 {
                     Console.WriteLine(updatedChromiumRegistryInfo.ToString());
                 }
+
+                Console.WriteLine("Done!");
             }
         }
     }
