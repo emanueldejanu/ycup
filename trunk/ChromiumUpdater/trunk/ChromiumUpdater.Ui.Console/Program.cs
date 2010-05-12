@@ -14,52 +14,59 @@ namespace ChromiumUpdater.Ui.Text
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(AppResources.ApplicationName);
-
-            using (IChromiumUpdateEngine updateEngine = ChromiumUpdateEngineFactory.CreateInstance())
+            try
             {
-                ChromiumRegistryInfo chromiumRegistryInfo = updateEngine.GetChromiumRegistryInfo();
-                String latestVersion = updateEngine.GetChromiumLatestVersionString();
-                Log changeLog = updateEngine.GetChromiumVersionChangeLogData(latestVersion);
-                
-                Console.WriteLine(AppResources.LatestChromiumVersion, latestVersion);
-                Console.WriteLine(AppResources.CurrentInstalledChromiumVersion, chromiumRegistryInfo != null ? chromiumRegistryInfo.ToString() : AppResources.None);
+                Console.WriteLine(AppResources.ApplicationName);
 
-                Console.WriteLine(AppResources.DownloadingChromium, latestVersion);
-
-                String targetFileName = null;
-                updateEngine.DownloadChromiumInstaller(Path.GetTempPath(), latestVersion, false, (x) =>
+                using (IChromiumUpdateEngine updateEngine = ChromiumUpdateEngineFactory.CreateInstance())
                 {
-                    if (x.FileDownloadState == FileDownloadState.Starting)
-                        targetFileName = x.FileName;
+                    ChromiumRegistryInfo chromiumRegistryInfo = updateEngine.GetChromiumRegistryInfo();
+                    String latestVersion = updateEngine.GetChromiumLatestVersionString();
+                    Log changeLog = updateEngine.GetChromiumVersionChangeLogData(latestVersion);
 
+                    Console.WriteLine(AppResources.LatestChromiumVersion, latestVersion);
+                    Console.WriteLine(AppResources.CurrentInstalledChromiumVersion, chromiumRegistryInfo != null ? chromiumRegistryInfo.ToString() : AppResources.None);
 
-                    if (x.ProgressPercentage % 10 == 0)
-                        Console.WriteLine("{0}% ({1} of {2})", x.ProgressPercentage, x.BytesReceived, x.TotalBytesToReceive);
+                    Console.WriteLine(AppResources.DownloadingChromium, latestVersion);
 
-                    return true;
-                });
-
-                Console.WriteLine();
-                Console.WriteLine("Launching installer...");
-
-                using (ProcessLauncher processLauncher = new ProcessLauncher())
-                {
-                    processLauncher.FileName = targetFileName;
-                    if (!processLauncher.Start(true, TimeSpan.FromSeconds(60 * 2)))
+                    String targetFileName = null;
+                    updateEngine.DownloadChromiumInstaller(Path.GetTempPath(), latestVersion, false, (x) =>
                     {
-                        Console.WriteLine("Child process failure");
+                        if (x.FileDownloadState == FileDownloadState.Starting)
+                            targetFileName = x.FileName;
+
+
+                        if (x.ProgressPercentage % 10 == 0)
+                            Console.Write(AppResources.DownloadProgress, x.ProgressPercentage, x.BytesReceived, x.TotalBytesToReceive);
+
+                        return true;
+                    });
+
+                    Console.WriteLine(AppResources.LaunchingInstaller);
+                    Console.WriteLine();
+
+                    using (ProcessLauncher processLauncher = new ProcessLauncher())
+                    {
+                        processLauncher.FileName = targetFileName;
+                        if (!processLauncher.Start(true, TimeSpan.FromSeconds(60 * 2)))
+                        {
+                            Console.WriteLine(AppResources.ChildProcessFailure);
+                        }
                     }
+
+                    ChromiumRegistryInfo updatedChromiumRegistryInfo = updateEngine.GetChromiumRegistryInfo();
+
+                    if (updatedChromiumRegistryInfo != null)
+                    {
+                        Console.WriteLine(updatedChromiumRegistryInfo.ToString());
+                    }
+
+                    Console.WriteLine(AppResources.Done);
                 }
-
-                ChromiumRegistryInfo updatedChromiumRegistryInfo = updateEngine.GetChromiumRegistryInfo();
-
-                if (updatedChromiumRegistryInfo != null)
-                {
-                    Console.WriteLine(updatedChromiumRegistryInfo.ToString());
-                }
-
-                Console.WriteLine("Done!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(AppResources.Error);
             }
         }
     }

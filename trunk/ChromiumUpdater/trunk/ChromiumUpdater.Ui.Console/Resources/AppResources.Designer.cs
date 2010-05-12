@@ -70,11 +70,29 @@ namespace ChromiumUpdater.Ui.Text.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Running downloaded installer failed!.
+        /// </summary>
+        internal static string ChildProcessFailure {
+            get {
+                return ResourceManager.GetString("ChildProcessFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current Installed Chromium Version: &apos;{0}&apos;.
         /// </summary>
         internal static string CurrentInstalledChromiumVersion {
             get {
                 return ResourceManager.GetString("CurrentInstalledChromiumVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Done.
+        /// </summary>
+        internal static string Done {
+            get {
+                return ResourceManager.GetString("Done", resourceCulture);
             }
         }
         
@@ -88,11 +106,38 @@ namespace ChromiumUpdater.Ui.Text.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to \r{0}% ({1} of {2}).
+        /// </summary>
+        internal static string DownloadProgress {
+            get {
+                return ResourceManager.GetString("DownloadProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: {0}.
+        /// </summary>
+        internal static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Latest Available Chromium Version: &apos;{0}&apos;.
         /// </summary>
         internal static string LatestChromiumVersion {
             get {
                 return ResourceManager.GetString("LatestChromiumVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Launching installer ....
+        /// </summary>
+        internal static string LaunchingInstaller {
+            get {
+                return ResourceManager.GetString("LaunchingInstaller", resourceCulture);
             }
         }
         

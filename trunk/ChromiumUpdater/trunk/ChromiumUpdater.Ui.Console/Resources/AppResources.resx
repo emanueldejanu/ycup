@@ -120,14 +120,29 @@
   <data name="ApplicationName" xml:space="preserve">
     <value>Chromium Updater</value>
   </data>
+  <data name="ChildProcessFailure" xml:space="preserve">
+    <value>Running downloaded installer failed!</value>
+  </data>
   <data name="CurrentInstalledChromiumVersion" xml:space="preserve">
     <value>Current Installed Chromium Version: '{0}'</value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value>Done</value>
   </data>
   <data name="DownloadingChromium" xml:space="preserve">
     <value>Downloading Chromium Version: '{0}'</value>
   </data>
+  <data name="DownloadProgress" xml:space="preserve">
+    <value>\r{0}% ({1} of {2})</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error: {0}</value>
+  </data>
   <data name="LatestChromiumVersion" xml:space="preserve">
     <value>Latest Available Chromium Version: '{0}'</value>
+  </data>
+  <data name="LaunchingInstaller" xml:space="preserve">
+    <value>Launching installer ...</value>
   </data>
   <data name="None" xml:space="preserve">
     <value>None</value>
