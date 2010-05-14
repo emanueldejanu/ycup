@@ -66,7 +66,7 @@ namespace ChromiumUpdater.Ui.Text
             }
             catch (Exception ex)
             {
-                Console.WriteLine(AppResources.Error);
+                Console.WriteLine(AppResources.Error, ex.Message);
             }
         }
     }
