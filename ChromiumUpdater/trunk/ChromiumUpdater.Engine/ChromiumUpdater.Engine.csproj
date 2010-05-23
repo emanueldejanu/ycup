@@ -116,6 +116,7 @@
     <Compile Include="HtmlRenderer\InitialContainer.cs" />
     <Compile Include="HtmlRenderer\Parser.cs" />
     <Compile Include="Io\VirtualStream.cs" />
+    <Compile Include="NDesk.Options\Options.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
