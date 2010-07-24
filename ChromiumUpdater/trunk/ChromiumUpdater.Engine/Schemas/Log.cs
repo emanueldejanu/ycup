@@ -7,48 +7,67 @@ using System.Xml.Serialization;
 
 namespace ChromiumUpdater.Engine.Schemas
 {
-    public partial class Log
+    public partial class ChangeLog
     {
         static XmlSerializer _xmlSerializer;
-        static Log _emptyLog;
+        static ChangeLog _emptyLog;
 
-        public static Log Deserialize(Stream s)
+        public static ChangeLog Deserialize(Stream s)
         {
-            return (Log)Log.GetXmlSerializer().Deserialize(s);
+            return (ChangeLog)ChangeLog.GetXmlSerializer().Deserialize(s);
         }
 
-        public static Log Empty
+        public static ChangeLog Empty
         {
             get
             {
-                if (Log._emptyLog == null)
+                if (ChangeLog._emptyLog == null)
                 {
-                    lock (typeof(Log))
+                    lock (typeof(ChangeLog))
                     {
-                        if (Log._emptyLog == null)
+                        if (ChangeLog._emptyLog == null)
                         {
-                            Log l = new Log();
-                            Log._emptyLog = l;
+                            ChangeLog l = new ChangeLog();
+                            ChangeLog._emptyLog = l;
                         }
                     }
                 }
-                return Log._emptyLog;
+                return ChangeLog._emptyLog;
             }
         }
 
         protected static XmlSerializer GetXmlSerializer()
         {
-            if (Log._xmlSerializer == null)
+            if (ChangeLog._xmlSerializer == null)
             {
-                lock(typeof(Log))
+                lock (typeof(ChangeLog))
                 {
-                    if (Log._xmlSerializer == null)
+                    if (ChangeLog._xmlSerializer == null)
                     {
-                        Log._xmlSerializer = new XmlSerializer(typeof(Log));
+                        ChangeLog._xmlSerializer = new XmlSerializer(typeof(ChangeLog));
                     }
                 }
             }
-            return Log._xmlSerializer;
+            return ChangeLog._xmlSerializer;
+        }
+
+        public String ConcatenatedText
+        {
+            get
+            {
+                if (this.textField == null)
+                    return String.Empty;
+
+                if (this.textField.Count == 0)
+                    return String.Empty;
+
+                StringBuilder sb = new StringBuilder();
+                foreach (var item in this.textField)
+                {
+                    sb.Append(item);
+                }
+                return sb.ToString();
+            }
         }
     }
 }

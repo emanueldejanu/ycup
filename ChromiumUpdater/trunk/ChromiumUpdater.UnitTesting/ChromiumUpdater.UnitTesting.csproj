@@ -62,6 +62,10 @@
   <ItemGroup>
     <Compile Include="ChromiumUpdateEngineTest.cs" />
     <Compile Include="ChromiumUrlBuilderTest.cs" />
+    <Compile Include="NDesk.Options\OptionContextTest.cs" />
+    <Compile Include="NDesk.Options\OptionSetTest.cs" />
+    <Compile Include="NDesk.Options\OptionTest.cs" />
+    <Compile Include="NDesk.Options\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
