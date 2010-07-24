@@ -1,132 +1,285 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
+<changelogs>
+Chromium changeLogs from ]52088 to 52101]
+
 
 <log>
 
-	<logentry
+<logentry
 
-	   revision="34576">
+   revision="52089">
 
-		<author>arv@chromium.org</author>
+<author>sergeyu@chromium.org</author>
 
-		<date>2009-12-15T18:47:14.827970Z</date>
+<date>2010-07-12T17:08:05.576178Z</date>
 
-		<msg>
-			NTP: Hide the notifier when restoring all removed thumbnails.
+<msg>Changed the revision number of libjingle to r24.
 
 
 
-			BUG=29952
+Review URL: http://codereview.chromium.org/2921004
 
-			TEST=Blacklist a thumbanil. This shows the notifier. Then restore all remove
+Patch from Ahmad Sharif &lt;asharif@chromium.org&gt;.</msg>
 
-			thumbnails. The notifier should be hidden now.
+</logentry>
 
+<logentry
 
+   revision="52090">
 
-			Review URL: http://codereview.chromium.org/494013
-		</msg>
+<author>johnnyg@chromium.org</author>
 
-	</logentry>
+<date>2010-07-12T17:13:49.002138Z</date>
 
-	<logentry
+<msg>Implement BiDi support and replace ID support for notifications.
 
-	   revision="34577">
 
-		<author>dkegel@google.com</author>
 
-		<date>2009-12-15T19:06:34.652156Z</date>
+BUG=none
 
-		<msg>
-			Absolutify suppression directories so they survive the cd.
+TEST=layout tests
 
 
 
-			Use the 'right' version of valgrind.  Later, once we have
+Review URL: http://codereview.chromium.org/1917004</msg>
 
-			our patches in, we need to implement
+</logentry>
 
-			the searching code from ../valgrind/valgrind.sh.
+<logentry
 
+   revision="52091">
 
+<author>jhawkins@chromium.org</author>
 
-			BUG=none
+<date>2010-07-12T17:24:05.721859Z</date>
 
-			TEST=wine bot actually runs valgrind on unit_tests
+<msg>AutoFill: Use setSuggestedValue() instead of setPlaceholder() when previewing
 
-			Review URL: http://codereview.chromium.org/507011
-		</msg>
+forms.  This protects the user's data from javascript that can read placeholder
 
-	</logentry>
+values.
 
-	<logentry
 
-	   revision="34578">
 
-		<author>akalin@chromium.org</author>
+BUG=48233
 
-		<date>2009-12-15T19:20:08.730893Z</date>
+TEST=FormManagerTest.PreviewForm
 
-		<msg>
-			Implemented OS X version of NetworkStatusDetectorTaskMac.
 
 
+Review URL: http://codereview.chromium.org/2845041</msg>
 
-			BUG=none
+</logentry>
 
-			TEST=trybots,manual testing
+<logentry
 
+   revision="52093">
 
+<author>erg@chromium.org</author>
 
-			Review URL: http://codereview.chromium.org/485004
-		</msg>
+<date>2010-07-12T17:30:06.109147Z</date>
 
-	</logentry>
+<msg>Header cleanup: SkBitmap and other unnecessary includes.
 
-	<logentry
 
-	   revision="34579">
 
-		<author>ojan@chromium.org</author>
+BUG=none
 
-		<date>2009-12-15T19:23:30.057310Z</date>
+TEST=none
 
-		<msg>
-			Add one more test that got flaky after sharding the http tests.
 
-			And mark the flaky tests from moving to apache and sharding
 
-			the http tests as part of the umbrella 9798 bug.
+Review URL: http://codereview.chromium.org/2891008</msg>
 
-			Review URL: http://codereview.chromium.org/501023
-		</msg>
+</logentry>
 
-	</logentry>
+<logentry
 
-	<logentry
+   revision="52094">
 
-	   revision="34580">
+<author>ananta@chromium.org</author>
 
-		<author>andybons@chromium.org</author>
+<date>2010-07-12T17:30:58.894952Z</date>
 
-		<date>2009-12-15T19:25:51.528589Z</date>
+<msg>ChromeFrame would leave chrome processes running if a page rendered in Chrome would open up a popup window which
 
-		<msg>
-			Reattempt at r465143. The UI tests rely too heavily on the current behavior of closing the last window indicating exiting the entire app, so that is left alone for now with a TODO added.
+opened up in IE. This is because of an orphan external tab container created to handle the popup. This tab is destroyed
 
-			From the old description:
+in the normal case when the active document window is destroyed, which is the parent of the external tab container.
 
-			Mac: Fixes bug where extension background hosts were being cleared when the last window was closed. It assumed that this meant the app was closing. Not the case with Mac apps. Added a mac-only notification APP_TERMINATED and use that to perform cleanup upon shutdown.
 
 
+However in this case the active document is destroyed without its window being created thus resulting in the external tab
 
-			TEST=More description in the bug, but basically just make sure that background views stick around even after you've closed the last window.
+container lying around which holds a reference to the automation provider.
 
-			BUG=28666
 
-			Review URL: http://codereview.chromium.org/502012
-		</msg>
 
-	</logentry>
+Fix is to pass the ChromeFrameAutomationClient window as the parent window in the AutomationMsg_ConnectExternalTab
+
+message.
+
+
+
+Fixes bug http://code.google.com/p/chromium/issues/detail?id=48732
+
+
+
+Bug=48732
+
+
+
+Covered by ChromeFrame test FullTabNavigationTest.JavascriptWindowOpenDifferentDomain
+
+
+
+
+
+Review URL: http://codereview.chromium.org/2911006</msg>
+
+</logentry>
+
+<logentry
+
+   revision="52095">
+
+<author>zhurunz@google.com</author>
+
+<date>2010-07-12T17:36:06.488594Z</date>
+
+<msg>Improvement from codereview http://codereview.chromium.org/2899008/show
+
+Review URL: http://codereview.chromium.org/2933007</msg>
+
+</logentry>
+
+<logentry
+
+   revision="52097">
+
+<author>jcivelli@google.com</author>
+
+<date>2010-07-12T17:38:10.613583Z</date>
+
+<msg>Don't offer to translate pages if the page says so by
+
+using the magic Google meta-tag.
+
+
+
+BUG=48606
+
+TEST=See bug.
+
+
+
+Review URL: http://codereview.chromium.org/2960001</msg>
+
+</logentry>
+
+<logentry
+
+   revision="52098">
+
+<author>willchan@chromium.org</author>
+
+<date>2010-07-12T17:40:49.646852Z</date>
+
+<msg>Posix: Stop crashing on SIG{INT|HUP|TERM}.
+
+BUG=48637
+
+
+
+Review URL: http://codereview.chromium.org/2927008</msg>
+
+</logentry>
+
+<logentry
+
+   revision="52099">
+
+<author>zhurunz@google.com</author>
+
+<date>2010-07-12T17:42:26.366217Z</date>
+
+<msg>Work around exception in command "which" while running GYP inside ChromiumOS chroot.
+
+
+
+ChromiumOS is trying to remove dpkg-buildpackage.
+
+If running inside ChromiumOS chroot, the "which" can throw exception when the target file is missing.
+
+( dpkg-buildpackage will be missing in this case )
+
+This doesn't happen with the "which" on Ubuntu.
+
+
+
+Work around it by using "whereis" instead. It works on both ChromiumOS choot and Ubuntu.
+
+
+
+Review URL: http://codereview.chromium.org/2945011</msg>
+
+</logentry>
+
+<logentry
+
+   revision="52100">
+
+<author>vandebo@chromium.org</author>
+
+<date>2010-07-12T17:54:54.875162Z</date>
+
+<msg>Implement HttpProxyClientSocket: Http proxie setup is now done in it's own class (refactor).
+
+
+
+BUG=42795
+
+TEST=existing unit tests
+
+
+
+Review URL: http://codereview.chromium.org/2799036</msg>
+
+</logentry>
+
+<logentry
+
+   revision="52101">
+
+<author>mbelshe@chromium.org</author>
+
+<date>2010-07-12T17:55:13.467252Z</date>
+
+<msg>Fix a race condition in the unit test.  The MockPending jobs actually
+
+induce a slight delay between the time the connect is called and when
+
+the posted task can complete.  We weren't waiting for the 2ms to
+
+elapse before expecting that it had completed.
+
+
+
+BUG=47836
+
+TEST=self
+
+
+
+Review URL: http://codereview.chromium.org/2893010</msg>
+
+</logentry>
 
 </log>
 
+
+No new ChangeLogs on WebKit
+
+No new ChangeLogs on V8
+
+</changelogs>

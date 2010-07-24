@@ -35,9 +35,21 @@ namespace ChromiumUpdater.Ui.Text
                         if (x.FileDownloadState == FileDownloadState.Starting)
                             targetFileName = x.FileName;
 
+                        switch (x.FileDownloadState)
+                        {
+                            case FileDownloadState.Starting:
+                                break;
 
-                        if (x.ProgressPercentage % 10 == 0)
-                            Console.Write(AppResources.DownloadProgress, x.ProgressPercentage, x.BytesReceived, x.TotalBytesToReceive);
+                            case FileDownloadState.Downloading:
+                                DrawTextProgressBar(x.BytesReceived, x.TotalBytesToReceive);
+                                break;
+
+                            case FileDownloadState.Completed:
+                                break;
+
+                            default:
+                                break;
+                        }
 
                         return true;
                     });
@@ -68,6 +80,40 @@ namespace ChromiumUpdater.Ui.Text
             {
                 Console.WriteLine(AppResources.Error, ex.Message);
             }
+            
+        }
+
+        private static void DrawTextProgressBar(long progress, long total)
+        {
+            //draw empty progress bar
+            Console.CursorLeft = 0;
+            Console.Write("["); //start
+            Console.CursorLeft = 32;
+            Console.Write("]"); //end
+            Console.CursorLeft = 1;
+            float onechunk = 30.0f / total;
+
+            //draw filled part
+            int position = 1;
+            for (int i = 0; i < onechunk * progress; i++)
+            {
+                Console.BackgroundColor = ConsoleColor.Gray;
+                Console.CursorLeft = position++;
+                Console.Write(" ");
+            }
+
+            //draw unfilled part
+            for (int i = position; i <= 31; i++)
+            {
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.CursorLeft = position++;
+                Console.Write(" ");
+            }
+
+            //draw totals
+            Console.CursorLeft = 35;
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Write(progress.ToString() + " of " + total.ToString() + "    "); //blanks at the end remove any excess
         }
     }
 }
