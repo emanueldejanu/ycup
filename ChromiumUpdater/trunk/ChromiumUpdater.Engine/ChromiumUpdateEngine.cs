@@ -79,17 +79,17 @@ namespace ChromiumUpdater.Engine
             return elements;
         }
 
-        ChangeLog IChromiumUpdateEngine.GetChromiumVersionChangeLogData(String version)
+         changelogs IChromiumUpdateEngine.GetChromiumVersionChangeLogData(String version)
         {
             using (Stream s = this.InternalGetChromiumVersionChangeLogDataStream(version))
             {
                 try
                 {
-                    return ChangeLog.Deserialize(s);
+                    return changelogs.Deserialize(s);
                 }
                 catch
                 {
-                    return ChangeLog.Empty;
+                    return changelogs.Empty;
                 }
             }
         }

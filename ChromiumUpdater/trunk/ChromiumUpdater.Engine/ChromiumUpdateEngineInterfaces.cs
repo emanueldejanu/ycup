@@ -12,7 +12,7 @@ namespace ChromiumUpdater.Engine
         ChromiumRegistryInfo GetChromiumRegistryInfo();
         void DownloadChromiumInstaller(String folder, String version, bool appendVersionToFileName, Func<FileDownloadProgressChangedEventArgs, bool> callback);
         IEnumerable<String> GetChromiumVersions();
-        ChangeLog GetChromiumVersionChangeLogData(String version);
+        changelogs GetChromiumVersionChangeLogData(String version);
         String GetChromiumLatestVersionString();
     }
 }

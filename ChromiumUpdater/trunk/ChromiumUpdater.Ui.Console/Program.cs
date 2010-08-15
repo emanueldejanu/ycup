@@ -22,7 +22,7 @@ namespace ChromiumUpdater.Ui.Text
                 {
                     ChromiumRegistryInfo chromiumRegistryInfo = updateEngine.GetChromiumRegistryInfo();
                     String latestVersion = updateEngine.GetChromiumLatestVersionString();
-                    Log changeLog = updateEngine.GetChromiumVersionChangeLogData(latestVersion);
+                    changelogs releaseChangeLog = updateEngine.GetChromiumVersionChangeLogData(latestVersion);
 
                     Console.WriteLine(AppResources.LatestChromiumVersion, latestVersion);
                     Console.WriteLine(AppResources.CurrentInstalledChromiumVersion, chromiumRegistryInfo != null ? chromiumRegistryInfo.ToString() : AppResources.None);
@@ -54,6 +54,7 @@ namespace ChromiumUpdater.Ui.Text
                         return true;
                     });
 
+                    Console.WriteLine();
                     Console.WriteLine(AppResources.LaunchingInstaller);
                     Console.WriteLine();
 
@@ -74,6 +75,20 @@ namespace ChromiumUpdater.Ui.Text
                     }
 
                     Console.WriteLine(AppResources.Done);
+
+
+                    if (releaseChangeLog != null)
+                    {
+                        Console.WriteLine(releaseChangeLog.ConcatenatedText);
+                        Console.WriteLine();
+
+                        releaseChangeLog.log.ForEach(x =>
+                        {
+                            Console.WriteLine("{0}: {1}@{2}", x.revision, x.author.Trim(), x.date);
+                            Console.WriteLine("{0}", x.msg.Trim());
+                        }
+                        );
+                    }
                 }
             }
             catch (Exception ex)
@@ -82,38 +97,12 @@ namespace ChromiumUpdater.Ui.Text
             }
             
         }
-
+        
         private static void DrawTextProgressBar(long progress, long total)
         {
-            //draw empty progress bar
-            Console.CursorLeft = 0;
-            Console.Write("["); //start
-            Console.CursorLeft = 32;
-            Console.Write("]"); //end
-            Console.CursorLeft = 1;
-            float onechunk = 30.0f / total;
-
-            //draw filled part
-            int position = 1;
-            for (int i = 0; i < onechunk * progress; i++)
-            {
-                Console.BackgroundColor = ConsoleColor.Gray;
-                Console.CursorLeft = position++;
-                Console.Write(" ");
-            }
-
-            //draw unfilled part
-            for (int i = position; i <= 31; i++)
-            {
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.CursorLeft = position++;
-                Console.Write(" ");
-            }
-
-            //draw totals
-            Console.CursorLeft = 35;
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.Write(progress.ToString() + " of " + total.ToString() + "    "); //blanks at the end remove any excess
+            String v = (progress * 100 / total).ToString();
+            String r = String.Format(AppResources.DownloadProgress, v, progress / 1024, total / 1024);
+            Console.Write("\r"+ r);
         }
     }
 }

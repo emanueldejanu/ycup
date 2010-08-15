@@ -7,58 +7,58 @@ using System.Xml.Serialization;
 
 namespace ChromiumUpdater.Engine.Schemas
 {
-    public partial class ChangeLog
+    public partial class changelogs
     {
         static XmlSerializer _xmlSerializer;
-        static ChangeLog _emptyLog;
+        static changelogs _emptyLog;
 
-        public static ChangeLog Deserialize(Stream s)
+        public static changelogs Deserialize(Stream s)
         {
-            return (ChangeLog)ChangeLog.GetXmlSerializer().Deserialize(s);
+            return (changelogs)changelogs.GetXmlSerializer().Deserialize(s);
         }
 
-        public static ChangeLog Empty
+        public static changelogs Empty
         {
             get
             {
-                if (ChangeLog._emptyLog == null)
+                if (changelogs._emptyLog == null)
                 {
-                    lock (typeof(ChangeLog))
+                    lock (typeof(changelogs))
                     {
-                        if (ChangeLog._emptyLog == null)
+                        if (changelogs._emptyLog == null)
                         {
-                            ChangeLog l = new ChangeLog();
-                            ChangeLog._emptyLog = l;
+                            changelogs l = new changelogs();
+                            changelogs._emptyLog = l;
                         }
                     }
                 }
-                return ChangeLog._emptyLog;
+                return changelogs._emptyLog;
             }
         }
 
         protected static XmlSerializer GetXmlSerializer()
         {
-            if (ChangeLog._xmlSerializer == null)
+            if (changelogs._xmlSerializer == null)
             {
-                lock (typeof(ChangeLog))
+                lock (typeof(changelogs))
                 {
-                    if (ChangeLog._xmlSerializer == null)
+                    if (changelogs._xmlSerializer == null)
                     {
-                        ChangeLog._xmlSerializer = new XmlSerializer(typeof(ChangeLog));
+                        changelogs._xmlSerializer = new XmlSerializer(typeof(changelogs));
                     }
                 }
             }
-            return ChangeLog._xmlSerializer;
+            return changelogs._xmlSerializer;
         }
-
+  
         public String ConcatenatedText
         {
             get
             {
-                if (this.textField == null)
+                if (this.Text == null)
                     return String.Empty;
 
-                if (this.textField.Count == 0)
+                if (this.Text.Count == 0)
                     return String.Empty;
 
                 StringBuilder sb = new StringBuilder();
