@@ -133,7 +133,7 @@
     <value>Downloading Chromium Version: '{0}'</value>
   </data>
   <data name="DownloadProgress" xml:space="preserve">
-    <value>\r{0}% ({1} of {2})</value>
+    <value>{0}% ({1}K of {2}K)</value>
   </data>
   <data name="Error" xml:space="preserve">
     <value>Error: {0}</value>

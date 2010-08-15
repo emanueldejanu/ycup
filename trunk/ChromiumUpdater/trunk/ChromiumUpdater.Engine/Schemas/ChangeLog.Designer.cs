@@ -30,23 +30,24 @@ namespace ChromiumUpdater.Engine.Schemas {
     #endregion
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.0.0.19663")]
-    [System.Xml.Serialization.XmlRootAttribute("changelogs", Namespace="", IsNullable=false)]
-    public partial class ChangeLog : EntityBase<ChangeLog> {
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+    public partial class changelogs : EntityBase<changelogs> {
         
-        private List<LogEntry> logsField;
+        private List<changelogsLogentry> logField;
         
         private List<string> textField;
         
         [System.Xml.Serialization.XmlArrayItemAttribute("logentry", IsNullable=false)]
-        public List<LogEntry> logs {
+        public List<changelogsLogentry> log {
             get {
-                if ((this.logsField == null)) {
-                    this.logsField = new List<LogEntry>();
+                if ((this.logField == null)) {
+                    this.logField = new List<changelogsLogentry>();
                 }
-                return this.logsField;
+                return this.logField;
             }
             set {
-                this.logsField = value;
+                this.logField = value;
             }
         }
         
@@ -65,7 +66,8 @@ namespace ChromiumUpdater.Engine.Schemas {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2Code", "3.0.0.19663")]
-    public partial class LogEntry : EntityBase<LogEntry> {
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+    public partial class changelogsLogentry : EntityBase<changelogsLogentry> {
         
     public string author {get; set;}
 

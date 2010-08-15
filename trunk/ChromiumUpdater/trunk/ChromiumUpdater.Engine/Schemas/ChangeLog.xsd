@@ -1,25 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="windows-1250"?>
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-	<xs:element name="changelogs" type="ChangeLog" >
+	<xs:element name="changelogs">
+		<xs:complexType mixed="true">
+			<xs:sequence>
+				<xs:element name="log">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element maxOccurs="unbounded" name="logentry">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="author" type="xs:string" />
+										<xs:element name="date" type="xs:dateTime" />
+										<xs:element name="msg" type="xs:string" />
+									</xs:sequence>
+									<xs:attribute name="revision" type="xs:unsignedShort" use="required" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
 	</xs:element>
-
-	<xs:complexType name="ChangeLog" mixed="true">
-		<xs:sequence minOccurs="1" maxOccurs="1">
-			<xs:element maxOccurs="1" minOccurs="0" name="logs" type="Log"/>
-		</xs:sequence>
-	</xs:complexType>
-
-	<xs:complexType name="Log">
-		<xs:sequence minOccurs="1" maxOccurs="1">
-			<xs:element maxOccurs="unbounded" name="logentry" type="LogEntry"/>
-		</xs:sequence>
-	</xs:complexType>	
-	<xs:complexType name="LogEntry">
-		<xs:sequence>
-			<xs:element name="author" type="xs:string" />
-			<xs:element name="date" type="xs:dateTime" />
-			<xs:element name="msg" type="xs:string" />
-		</xs:sequence>
-		<xs:attribute name="revision" type="xs:unsignedShort" use="required" />
-	</xs:complexType>	
 </xs:schema>

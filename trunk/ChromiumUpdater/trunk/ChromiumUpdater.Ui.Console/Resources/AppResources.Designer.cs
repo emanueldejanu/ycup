@@ -106,7 +106,7 @@ namespace ChromiumUpdater.Ui.Text.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to \r{0}% ({1} of {2}).
+        ///   Looks up a localized string similar to {0}% ({1}K of {2}K).
         /// </summary>
         internal static string DownloadProgress {
             get {

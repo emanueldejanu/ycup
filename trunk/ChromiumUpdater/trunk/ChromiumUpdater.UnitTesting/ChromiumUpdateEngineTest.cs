@@ -129,7 +129,7 @@ namespace ChromiumUpdater.UnitTesting
                 string actual;
                 actual = target.GetChromiumLatestVersionString();
                 Assert.AreNotEqual<String>(actual, String.Empty);
-                ChangeLog log = target.GetChromiumVersionChangeLogData(actual);
+                changelogs log = target.GetChromiumVersionChangeLogData(actual);
                 Assert.IsNotNull(log);
             }
             catch
