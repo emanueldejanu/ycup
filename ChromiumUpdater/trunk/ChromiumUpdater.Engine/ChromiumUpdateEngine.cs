@@ -18,6 +18,14 @@ namespace ChromiumUpdater.Engine
 {
      internal class ChromiumUpdateEngine : IChromiumUpdateEngine, IDisposable
     {
+         internal ChromiumUpdateEngineConfiguration Configuration { get; set; }
+
+         public ChromiumUpdateEngine(ChromiumUpdateEngineConfiguration configuration)
+         {
+             if ((this.Configuration = configuration) == null)
+                 throw new ArgumentNullException("configuration");
+         }
+
          const String ChromiumRegistryKey = @"Software\Chromium";
 
          ChromiumRegistryInfo IChromiumUpdateEngine.GetChromiumRegistryInfo()
@@ -111,7 +119,7 @@ namespace ChromiumUpdater.Engine
             DownloadStringCompletedEventArgs completedEventArgs = null;
             using (AutoResetEvent ev = new AutoResetEvent(false))
             {
-                using (WebClient webClient = new WebClient())
+                using (WebClient webClient = this.InternalCreateWebClient())
                 {
                     if (
                         (callback != null) &&
@@ -189,7 +197,7 @@ namespace ChromiumUpdater.Engine
             AsyncCompletedEventArgs completedEventArgs = null;
             using (AutoResetEvent ev = new AutoResetEvent(false))
             {
-                using (WebClient webClient = new WebClient())
+                using (WebClient webClient = this.InternalCreateWebClient())
                 {
                     if (
                         (callback != null) &&
@@ -266,7 +274,7 @@ namespace ChromiumUpdater.Engine
         {
             ChromiumUrlBuilder urlBuilder = new ChromiumUrlBuilder();
             Uri uri = urlBuilder.GetUrlToUpdateXml(version);
-            WebClient webClient = new WebClient();
+            WebClient webClient = this.InternalCreateWebClient();
             using (Stream s = webClient.OpenRead(uri))
             {
                 VirtualStream vs = new VirtualStream();
@@ -274,6 +282,28 @@ namespace ChromiumUpdater.Engine
                 vs.Position = 0;
                 return vs;
             }
+        }
+
+        internal WebClient InternalCreateWebClient()
+        {
+            WebClient webClient = new WebClient();
+            IWebProxy webProxy = null;
+            switch (this.Configuration.WebProxyType)
+            {
+                case ProxyType.None:
+                    webProxy = null;
+                    break;
+                case ProxyType.FromSystem:
+                    webProxy = WebRequest.GetSystemWebProxy();
+                    break;
+                case ProxyType.Custom:
+                    webProxy = new WebProxy(this.Configuration.WebProxyAddress);
+                    break;
+                default:
+                    break;
+            }
+            webClient.Proxy = webProxy;
+            return webClient;
         }
 
         void IDisposable.Dispose()
