@@ -18,7 +18,7 @@ namespace ChromiumUpdater.Ui.Text
             {
                 Console.WriteLine(AppResources.ApplicationName);
 
-                using (IChromiumUpdateEngine updateEngine = ChromiumUpdateEngineFactory.CreateInstance())
+                using (IChromiumUpdateEngine updateEngine = ChromiumUpdateEngineFactory.CreateInstance(new ChromiumUpdateEngineConfiguration() {  WebProxyType = ProxyType.None }))
                 {
                     ChromiumRegistryInfo chromiumRegistryInfo = updateEngine.GetChromiumRegistryInfo();
                     String latestVersion = updateEngine.GetChromiumLatestVersionString();

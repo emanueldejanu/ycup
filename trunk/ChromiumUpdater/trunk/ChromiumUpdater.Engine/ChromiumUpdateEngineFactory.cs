@@ -9,7 +9,13 @@ namespace ChromiumUpdater.Engine
     {
         public static IChromiumUpdateEngine CreateInstance()
         {
-            return new ChromiumUpdateEngine() as IChromiumUpdateEngine;
+
+            return new ChromiumUpdateEngine(new ChromiumUpdateEngineConfiguration() { WebProxyType = ProxyType.None }) as IChromiumUpdateEngine;
+        }
+
+        public static IChromiumUpdateEngine CreateInstance(ChromiumUpdateEngineConfiguration configuration)
+        {
+            return new ChromiumUpdateEngine(configuration) as IChromiumUpdateEngine;
         }
     }
 }
