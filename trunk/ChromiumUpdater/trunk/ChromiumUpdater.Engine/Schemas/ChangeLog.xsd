@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="windows-1250"?>
+<?xml version="1.0" encoding="windows-1250"?>
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:element name="changelogs">
 		<xs:complexType mixed="true">
@@ -13,7 +13,7 @@
 										<xs:element name="date" type="xs:dateTime" />
 										<xs:element name="msg" type="xs:string" />
 									</xs:sequence>
-									<xs:attribute name="revision" type="xs:unsignedShort" use="required" />
+									<xs:attribute name="revision" type="xs:int" use="required" />
 								</xs:complexType>
 							</xs:element>
 						</xs:sequence>

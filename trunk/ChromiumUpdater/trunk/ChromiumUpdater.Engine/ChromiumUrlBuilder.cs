@@ -7,7 +7,7 @@ namespace ChromiumUpdater.Engine
 {
     class ChromiumUrlBuilder
     {
-        const String DefaultBaseUrl = "http://build.chromium.org/buildbot/snapshots/chromium-rel-xp/";
+        const String DefaultBaseUrl = "http://build.chromium.org/f/chromium/snapshots/chromium-rel-xp/";
         const String MiniInstaller = "mini_installer.exe";
         const String Latest = "LATEST";
         const String ChangeLog = "changelog.xml";
