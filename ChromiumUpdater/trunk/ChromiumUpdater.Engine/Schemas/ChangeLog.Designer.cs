@@ -76,7 +76,7 @@ namespace ChromiumUpdater.Engine.Schemas {
     public string msg {get; set;}
 
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public ushort revision {get; set;}
+    public int revision {get; set;}
 
     }
 }
