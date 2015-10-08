@@ -1,0 +1,1 @@
+The purpose of this project is to create simple Chromium updater  working on different flavors of Windows. This project was triggered by a fact that popular Chromium Updaters available on net have problems with x64 Windows, aim is to crate one that works properly on both x64 as well as x86 systems.
